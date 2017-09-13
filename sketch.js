@@ -1,68 +1,47 @@
 var x = 0;
 var counter = 1;
-var color=51;
-var switcher = false;
+var timers = [];
+var num=50;
 function setup() {
 	createCanvas(200, 200);
-	timer = createP(0);
-	button_start = createButton("start");
-	button_stop = createButton("stop");
-	button_start.mousePressed(startTimer);
-	button_stop.mousePressed(stopTimer);
+	timer1 = createP(0);
+	timer2 = createP(0);
 
-	button_doTimer = createButton("startTimer");
-	button_doTimer.mousePressed(doTimer);
-	//setInterval(timeIt,1000);
+	makeTimer(timer1,100);
+	makeTimer(timer2,40);
+	loopTimer();
+	startTimer();
+	console.log(timers);
 }
 
-function doTimer(){
-	if(switcher === false){
-	startTimer();
-	button_doTimer.html("stopTimer");
-	} else if(switcher === true){
-		stopTimer();
-		button_doTimer.html("startTImer");
-	}
+function loopTimer(){//make timer array
+	for(i=0;i<num;i++){
+		timers.push("timer"+i);
+		timers[i]=createP(0);
+	} 
 }
 function startTimer(){
-	switcher=true;
-	interval = setInterval(timeIt,1000);
+	for(i=0;i<num;i++){
+		makeTimer(timers[i],100+i*20);
+	}
 }
-function stopTimer(){
-	switcher = false;
-	clearInterval(interval); //stops the timer
+function makeTimer(elt,wait){
+	var counter = 0;
+	setInterval(timeIt, wait);
+
+	function timeIt(){
+		elt.html(counter);
+		counter++;
+	}
+	
+	
 }
 
-// function mousePressed(){
-// 	timer.html(0);
-// 	setInterval(timeIt,1000);
-// 	console.log("Mouse pressed")
-// }
 
-function timeIt(){
-	timer.html(counter);
-	counter++;
-}
-// function mousePressed(){
-// 	console.log("mousepressed")
-// 	setTimeout(rainbow,3000);
 
-// }
-
-// function rainbow(){
-// 	createP("3secs");
-// 	setTimeout(rainbow,100);
-// }
 
 function draw() {
-
-	//timer.html(frameCount);
-	if(switcher===true){
-		color = 200;
-	} else if(switcher === false){
-		color = 0;
-	}
-	background(color);
+	background(51);
 	stroke(255);
 	line(x,0,x,height);
 	x = x + 3;
